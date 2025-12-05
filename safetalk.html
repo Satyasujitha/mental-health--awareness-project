@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafeTalk Support</title>
+<title>SafeTalk Support Chat</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top-header">
-  <h1>SafeTalk 🗣️</h1>
-  <p>You are not alone. Talking helps you feel lighter.</p>
+  <h1>SafeTalk 💬</h1>
+  <p>Talk. Share. Feel lighter.</p>
 </header>
 
 <nav class="navbar">
@@ -22,31 +22,29 @@
 
 <section class="card-section">
 
-  <!-- WHY TALKING HELPS -->
+  <!-- WHY -->
   <div class="card" style="text-align:left;">
     <h2>💛 Why talking helps</h2>
-    <ul style="line-height:1.6;">
-      <li>Releases stress & bottled emotions</li>
-      <li>Makes you feel supported & safe</li>
-      <li>Gives clarity when confused</li>
-      <li>Reduces loneliness</li>
-      <li>You understand yourself better</li>
+    <ul>
+      <li>You feel understood</li>
+      <li>You stop overthinking alone</li>
+      <li>Your stress reduces</li>
+      <li>Your emotions feel lighter</li>
     </ul>
   </div>
 
-  <!-- WHEN TO TALK -->
+  <!-- WHEN -->
   <div class="card" style="text-align:left;">
     <h2>🕒 When should you talk?</h2>
-    <ul style="line-height:1.6;">
-      <li>When feelings get too heavy</li>
-      <li>When overthinking doesn’t stop</li>
-      <li>When you feel ignored or anxious</li>
-      <li>When mood stays low for days</li>
-      <li>When sleep/eating pattern changes</li>
+    <ul>
+      <li>When thoughts feel too heavy</li>
+      <li>When you feel ignored</li>
+      <li>When anxiety stays for days</li>
+      <li>When mood doesn’t lift</li>
     </ul>
   </div>
 
-  <!-- ADD A TRUSTED PERSON -->
+  <!-- CONTACTS SAVE -->
   <div class="card">
     <h2>📞 Add Someone You Trust</h2>
     <input type="text" id="name" placeholder="Name" class="input-box">
@@ -56,34 +54,32 @@
     <p id="saveMsg"></p>
   </div>
 
-  <!-- SHOW SAVED CONTACTS -->
+  <!-- SAVED -->
   <div class="card" style="text-align:left;">
     <h2>📋 Saved Trusted Contacts</h2>
     <div id="contactList"></div>
   </div>
 
-  <!-- HOW TO START TALKING -->
-  <div class="card" style="text-align:left;">
-    <h2>🗣️ How to start a conversation</h2>
-    <ul style="line-height:1.6;">
-      <li>“I’ve been feeling low lately, can I talk to you?”</li>
-      <li>“I need someone to listen, are you free?”</li>
-      <li>“I don’t know what’s happening, but I need support.”</li>
-      <li>“Can I share what’s going on in my head?”</li>
-    </ul>
-  </div>
-
-  <!-- HELPLINE -->
-  <div class="card" style="text-align:left;">
-    <h2>🚨 Emergency Helpline</h2>
-    <p><strong>1098</strong> - Child Helpline</p>
-    <p><strong>112</strong> - National Emergency Number</p>
-    <p style="font-size:0.9rem;">Use only if necessary or in unsafe situations.</p>
-  </div>
-
 </section>
 
-<!-- BACK -->
+<!-- CHAT SECTION -->
+<h2 style="text-align:center;">💬 Share What You Feel</h2>
+
+<div class="chat-container" id="chatBox"></div>
+
+<div class="chat-input-area">
+  <input type="text" id="userInput" placeholder="Type how you're feeling..." />
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<section class="card-section">
+  <div class="card" style="text-align:left;">
+    <h2>🚨 Emergency Helpline</h2>
+    <p>1098 - Child Helpline</p>
+    <p>112 - National Emergency Number</p>
+  </div>
+</section>
+
 <div class="back-container">
   <a href="tips.html"><button class="back-btn">← Back to Tips</button></a>
 </div>
@@ -102,13 +98,11 @@ function savePerson() {
   const data = JSON.parse(localStorage.getItem("trustedPersons")) || [];
   data.push({ name, relation, phone });
   localStorage.setItem("trustedPersons", JSON.stringify(data));
-
+  showContacts();
   document.getElementById("saveMsg").innerText = "✔ Contact saved!";
   document.getElementById("name").value = "";
   document.getElementById("relation").value = "";
   document.getElementById("phone").value = "";
-
-  showContacts();
 }
 
 function showContacts() {
@@ -120,10 +114,10 @@ function showContacts() {
     return;
   }
 
-  let html = "<ul style='padding-left:15px;'>";
+  let html = "<ul>";
   data.forEach((person, index) => {
     html += `<li>${person.name} (${person.relation}) - ${person.phone}
-      <button onclick="deletePerson(${index})" style="margin-left:10px; font-size:0.8rem;">Delete</button>
+      <button onclick="deletePerson(${index})">Delete</button>
     </li>`;
   });
   html += "</ul>";
@@ -138,6 +132,44 @@ function deletePerson(index) {
 }
 
 showContacts();
+
+function botReply(text) {
+  const bubble = document.createElement("div");
+  bubble.classList.add("chat-bubble", "bot");
+  bubble.innerText = text;
+  chatBox.appendChild(bubble);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  if (!input.value.trim()) return;
+
+  const bubble = document.createElement("div");
+  bubble.classList.add("chat-bubble", "user");
+  bubble.innerText = input.value;
+  chatBox.appendChild(bubble);
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  let msg = input.value.toLowerCase();
+  input.value = "";
+
+  setTimeout(() => {
+    if (msg.includes("sad") || msg.includes("low") || msg.includes("upset")) {
+      botReply("I’m sorry you’re feeling this way 💛 I’m here to listen if you want to share more.");
+    } 
+    else if (msg.includes("angry") || msg.includes("frustrated")) {
+      botReply("That sounds tough. What made you feel this way?");
+    }
+    else if (msg.includes("scared") || msg.includes("anxious")) {
+      botReply("Anxiety can feel heavy. You’re safe here. Want to talk more?");
+    }
+    else {
+      botReply("I’m listening 👂 You can tell me more if you'd like.");
+    }
+  }, 700);
+}
 </script>
 
 </body>
