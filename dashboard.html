@@ -3,63 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+<title>Dashboard Summary</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <header class="top-header">
-  <h1>Dashboard</h1>
-  <p>Your Mood Progress Overview</p>
+  <h1>Wellness Dashboard 📊</h1>
+  <p>Your overall mental & digital balance progress</p>
 </header>
 
 <nav class="navbar">
   <a href="index.html">Home</a>
-  <a href="mood.html">Start Journey</a>
-  <a href="dashboard.html">Dashboard</a>
+  <a href="tips.html">Tips</a>
   <a href="quiz.html">Quiz</a>
   <a href="safetalk.html">SafeTalk</a>
 </nav>
 
 <section class="card-section">
-  <div class="card" style="width: 450px;">
-    <h2>Mood History Graph</h2>
-    <canvas id="moodChart"></canvas>
+
+  <div class="card">
+    <h2>🗣️ Trusted Contacts</h2>
+    <p id="contactCount">Loading...</p>
   </div>
+
+  <div class="card">
+    <h2>🎨 Saved Hobbies</h2>
+    <p id="hobbyCount">Loading...</p>
+  </div>
+
+  <div class="card">
+    <h2>🏃 Physical Activities</h2>
+    <p id="activeCount">Loading...</p>
+  </div>
+
+  <div class="card">
+    <h2>🌿 Detox Sessions</h2>
+    <p id="detoxCount">Loading...</p>
+  </div>
+
+  <div class="card">
+    <h2>🧘 Meditation Sessions</h2>
+    <p id="medCount">Loading...</p>
+  </div>
+
+  <div class="card">
+    <h2>📱 Screen Logs (Days Tracked)</h2>
+    <p id="screenDays">Loading...</p>
+  </div>
+
 </section>
 
-<script>
-const moodMap = { happy: 90, okay: 70, confused: 50, sad: 30, down: 10 };
-const history = JSON.parse(localStorage.getItem("moodHistory")) || [];
-
-const labels = history.map(h => h.date);
-const values = history.map(h => moodMap[h.mood]);
-
-new Chart(document.getElementById("moodChart"), {
-  type: "line",
-  data: {
-    labels: labels,
-    datasets: [{
-      label: "Mood Level (%)",
-      data: values,
-      borderColor: "#007cff",
-      borderWidth: 3,
-      pointRadius: 5,
-      pointBackgroundColor: "#ff8247",
-      tension: 0.4
-    }]
-  },
-  options: {
-    scales: {
-      y: { min: 0, max: 100 }
-    }
-  }
-});
-</script>
+<!-- BACK BUTTON -->
 <div class="back-container">
   <a href="index.html"><button class="back-btn">← Back to Home</button></a>
 </div>
+
+<script>
+// 1. Contacts Count
+function loadContactCount() {
+  const data = JSON.parse(localStorage.getItem("trustedPersons")) || [];
+  document.getElementById("contactCount").innerText = data.length + " saved";
+}
+
+// 2. Hobbies Count
+function loadHobbyCount() {
+  const data = JSON.parse(localStorage.getItem("hobbyList")) || [];
+  document.getElementById("hobbyCount").innerText = data.length + " hobbies";
+}
+
+// 3. Active (Physical) Count
+function loadActiveCount() {
+  const data = JSON.parse(localStorage.getItem("activeTrack")) || [];
+  document.getElementById("activeCount").innerText = data.length + " activities";
+}
+
+// 4. Detox Count
+function loadDetoxCount() {
+  const data = JSON.parse(localStorage.getItem("screenTrack")) || [];
+  document.getElementById("detoxCount").innerText = data.length + " detox logs";
+}
+
+// 5. Meditation Count
+function loadMeditationCount() {
+  const data = JSON.parse(localStorage.getItem("meditationLog")) || [];
+  document.getElementById("medCount").innerText = data.length + " sessions";
+}
+
+// 6. Screen Days
+function loadScreenDays() {
+  const data = JSON.parse(localStorage.getItem("screenTrack")) || [];
+  document.getElementById("screenDays").innerText = data.length + " days tracked";
+}
+
+// INIT LOAD
+loadContactCount();
+loadHobbyCount();
+loadActiveCount();
+loadDetoxCount();
+loadMeditationCount();
+loadScreenDays();
+</script>
 
 </body>
 </html>
