@@ -297,4 +297,50 @@ select {
   text-align: center;
   margin-top: 15px;
 }
+/* ==============================
+   MOOD RESULT PAGE CLEAN STYLING
+   ============================== */
+
+.mood-container {
+  width: 90%;
+  max-width: 650px;
+  margin: 70px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+}
+
+.mood-container h1 {
+  font-size: 1.9rem;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.mood-text {
+  font-size: 1.15rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Back to Home Button */
+.mood-back-btn {
+  background-color: #0b57d0;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 28px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 60%;
+  max-width: 280px;
+}
+
+.mood-back-btn:hover {
+  background-color: #083e9b;
+}
+
 
