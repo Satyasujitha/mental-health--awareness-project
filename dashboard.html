@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="top-header">
+  <h1>Dashboard</h1>
+  <p>Your Mood Progress Overview</p>
+</header>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="mood.html">Start Journey</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+  <div class="card" style="width: 450px;">
+    <h2>Mood History Graph</h2>
+    <canvas id="moodChart"></canvas>
+  </div>
+</section>
+
+<script>
+const moodMap = { happy: 90, okay: 70, confused: 50, sad: 30, down: 10 };
+const history = JSON.parse(localStorage.getItem("moodHistory")) || [];
+
+const labels = history.map(h => h.date);
+const values = history.map(h => moodMap[h.mood]);
+
+new Chart(document.getElementById("moodChart"), {
+  type: "line",
+  data: {
+    labels: labels,
+    datasets: [{
+      label: "Mood Level (%)",
+      data: values,
+      borderColor: "#007cff",
+      borderWidth: 3,
+      pointRadius: 5,
+      pointBackgroundColor: "#ff8247",
+      tension: 0.4
+    }]
+  },
+  options: {
+    scales: {
+      y: { min: 0, max: 100 }
+    }
+  }
+});
+</script>
+<div class="back-container">
+  <a href="index.html"><button class="back-btn">← Back to Home</button></a>
+</div>
+
+</body>
+</html>

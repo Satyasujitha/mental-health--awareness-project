@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stay Active Physically</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <h1>Stay Active Physically 🏃‍♂️</h1>
+  <p>Movement boosts mood, confidence & calmness</p>
+</header>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="tips.html">Mind Tips</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+
+  <!-- Why Active -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>🏃‍♂️ Why Activity Helps</h2>
+    <ul style="line-height:1.7; margin-top:10px;">
+      <li>Releases happy hormones (endorphins)</li>
+      <li>Reduces anxiety & improves sleep</li>
+      <li>Boosts confidence & focus</li>
+      <li>Keeps body strong & mind stable</li>
+      <li>Stops overthinking and stress loops</li>
+    </ul>
+  </div>
+
+  <!-- Daily Activity Log -->
+  <div class="card" style="width:460px;">
+    <h2>📍 Record Today’s Activity</h2>
+
+    <input type="number" id="steps" placeholder="Enter steps / minutes"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+    <button onclick="saveSteps()">Save</button>
+    <p id="stepsMsg" style="color:green; margin-top:10px;"></p>
+  </div>
+
+  <!-- Weekly Progress -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>📊 Weekly Progress</h2>
+    <button onclick="showProgress()">Show Progress</button>
+    <div id="progressList" style="margin-top:15px;"></div>
+  </div>
+
+  <!-- Reminder -->
+  <div class="card" style="width:460px;">
+    <h2>⏰ Set Activity Reminder</h2>
+    <input type="time" id="reminderTime"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc;">
+    <button onclick="saveReminder()">Save Reminder</button>
+    <p id="reminderMsg" style="color:green; margin-top:10px;"></p>
+  </div>
+
+  <!-- Badge -->
+  <div class="card" style="width:460px;">
+    <h2>🏅 Achievement Badge</h2>
+    <button onclick="checkBadge()">Check</button>
+    <p id="badgeMsg" style="margin-top:10px; font-weight:600;"></p>
+  </div>
+
+  <!-- Reset -->
+  <div class="card" style="width:460px;">
+    <h2>🔄 Reset All Activity Data</h2>
+    <button onclick="resetAll()">Reset</button>
+    <p style="font-size:0.8rem; margin-top:10px;">Use only if needed</p>
+  </div>
+
+</section>
+
+<script>
+function saveSteps() {
+  const val = document.getElementById("steps").value;
+  if (val === "") { alert("Enter value first!"); return; }
+
+  const data = JSON.parse(localStorage.getItem("activityTrack")) || [];
+  data.push(Number(val));
+  localStorage.setItem("activityTrack", JSON.stringify(data));
+  document.getElementById("stepsMsg").innerText = "✔ Saved successfully!";
+  document.getElementById("steps").value = "";
+}
+
+function showProgress() {
+  const listDiv = document.getElementById("progressList");
+  const data = JSON.parse(localStorage.getItem("activityTrack")) || [];
+
+  if (data.length === 0) {
+    listDiv.innerHTML = "<p>No progress yet 🏃‍♂️</p>";
+    return;
+  }
+
+  let total = data.reduce((a, b) => a + b, 0);
+  let html = "<ul style='list-style:none; padding-left:0; line-height:1.7;'>";
+  data.forEach((d, i) => {
+    html += `<li>Day ${i+1}: ${d} steps/minutes</li>`;
+  });
+  html += "</ul>";
+  html += `<p><strong>Total:</strong> ${total}</p>`;
+  listDiv.innerHTML = html;
+}
+
+function saveReminder() {
+  const time = document.getElementById("reminderTime").value;
+  if (time === "") { alert("Select time first"); return; }
+
+  localStorage.setItem("activityReminder", time);
+  document.getElementById("reminderMsg").innerText =
+    "✔ Reminder set at " + time;
+}
+
+function checkBadge() {
+  const data = JSON.parse(localStorage.getItem("activityTrack")) || [];
+  const total = data.reduce((a, b) => a + b, 0);
+
+  if (total >= 200) {
+    document.getElementById("badgeMsg").innerText = "🏅 Super Active Champion!";
+  } else if (total >= 100) {
+    document.getElementById("badgeMsg").innerText = "💪 Active & Consistent!";
+  } else if (total > 0) {
+    document.getElementById("badgeMsg").innerText = "🙂 Keep Going!";
+  } else {
+    document.getElementById("badgeMsg").innerText = "❗No activity recorded yet";
+  }
+}
+
+function resetAll() {
+  localStorage.removeItem("activityTrack");
+  localStorage.removeItem("activityReminder");
+  document.getElementById("progressList").innerHTML = "";
+  document.getElementById("badgeMsg").innerText = "";
+  alert("Data cleared.");
+}
+</script>
+<div class="back-container">
+  <a href="tips.html"><button class="back-btn">← Back to Tips</button></a>
+</div>
+
+</body>
+</html>

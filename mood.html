@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Mood</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-header">
+  <h1>Mood Check</h1>
+  <p>How are you feeling today?</p>
+</header>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="mood.html">Start Journey</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+
+  <div class="emoji-card" onclick="go('happy')">😁<p>Happy</p></div>
+  <div class="emoji-card" onclick="go('okay')">🙂<p>Okay</p></div>
+  <div class="emoji-card" onclick="go('confused')">😕<p>Confused</p></div>
+  <div class="emoji-card" onclick="go('sad')">😞<p>Sad</p></div>
+  <div class="emoji-card" onclick="go('down')">😔<p>Low</p></div>
+
+</section>
+
+<script>
+function go(mood) {
+  const today = new Date().toLocaleDateString();
+  const moodData = JSON.parse(localStorage.getItem("moodHistory")) || [];
+  moodData.push({ date: today, mood });
+  localStorage.setItem("moodHistory", JSON.stringify(moodData));
+
+  if (mood === "happy" || mood === "okay") {
+    window.location.href = "motivation.html";
+  } else {
+    window.location.href = "breathing.html";
+  }
+}
+</script>
+<div class="back-container">
+  <a href="index.html"><button class="back-btn">← Back to Home</button></a>
+</div>
+
+</body>
+</html>

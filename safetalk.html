@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeTalk 💬</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-header">
+  <h1>SafeTalk</h1>
+  <p>Share your feelings safely 💛</p>
+</header>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="mood.html">Start Journey</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+  <div class="card" style="width: 350px;">
+    <textarea id="msg" placeholder="Write your feelings..."></textarea>
+    <button onclick="postMsg()">Post</button>
+  </div>
+
+  <div class="card" style="width: 450px;">
+    <h3>Messages</h3>
+    <div id="wall"></div>
+  </div>
+</section>
+
+
+<script>
+const form = document.getElementById("msgForm");
+const wall = document.getElementById("wall");
+
+function loadMessages() {
+  const msgs = JSON.parse(localStorage.getItem("safeTalk")) || [];
+  wall.innerHTML = msgs.map(m => `<div class="neon-box" style="margin:10px 0;padding:15px;">${m}</div>`).join("");
+}
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const msg = document.getElementById("message").value;
+
+  const existing = JSON.parse(localStorage.getItem("safeTalk")) || [];
+  existing.push(msg);
+
+  localStorage.setItem("safeTalk", JSON.stringify(existing));
+  document.getElementById("message").value = "";
+
+  loadMessages();
+});
+
+loadMessages();
+</script>
+<div class="back-container">
+  <a href="index.html"><button class="back-btn">← Back to Home</button></a>
+</div>
+
+</body>
+</html>

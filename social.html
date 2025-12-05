@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limit Screen Time</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <h1>Limit Social Media 📱</h1>
+  <p>Digital balance = Calm mind, better sleep</p>
+</header>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="tips.html">Mind Tips</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+
+  <!-- 1. Screen Time Importance -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>📱 Why Balance Screen Time?</h2>
+    <ul style="line-height:1.7;">
+      <li>Reduces stress & overthinking</li>
+      <li>Improves sleep quality</li>
+      <li>Protects eye health</li>
+      <li>Better focus & studies</li>
+      <li>Stops comparing & anxiety</li>
+    </ul>
+  </div>
+
+  <!-- 2. App-wise Usage -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>📊 App-wise Usage</h2>
+    <input type="number" id="insta" placeholder="Instagram (mins)" style="padding:8px; width:100%; border-radius:8px;">
+    <input type="number" id="yt" placeholder="YouTube (mins)" style="padding:8px; width:100%; border-radius:8px; margin-top:8px;">
+    <button onclick="saveApps()" style="margin-top:10px;">Save</button>
+    <p id="appMsg" style="color:green; margin-top:10px;"></p>
+  </div>
+
+  <!-- 3. Daily Usage Log -->
+  <div class="card" style="width:460px;">
+    <h2>📝 Daily Screen Time</h2>
+    <input type="number" id="screenTime" placeholder="Total minutes" 
+      style="padding:8px; width:100%; border-radius:8px;">
+    <button onclick="saveTime()" style="margin-top:10px;">Save</button>
+    <button onclick="showTime()" style="margin-top:8px;">Show Log</button>
+    <div id="logList" style="margin-top:15px;"></div>
+  </div>
+
+  <!-- 4. Detox Mode -->
+ <!-- 4. Detox Mode -->
+<div class="card" style="width:460px;">
+  <h2>🌿 Mini Digital Detox (1 Hour)</h2>
+  <p style="font-size:0.9rem;">Choose one peaceful thing to do in this offline time:</p>
+
+  <ul style="line-height:1.7; text-align:left; margin-top:10px;">
+    <li>💛 Write how you feel in a journal</li>
+    <li>🎧 Listen to calm instrumental music</li>
+    <li>🌱 Sit outside / balcony & observe nature</li>
+    <li>☕ Drink tea / juice without phone distraction</li>
+    <li>📚 Read 5–10 pages of a story book</li>
+    <li>🎨 Try small doodle or coloring</li>
+    <li>🚶‍♂️ Walk for 10 minutes (no phone)</li>
+    <li>😴 Close eyes & relax quietly for 5 minutes</li>
+  </ul>
+
+  <button onclick="startDetox()">Start 1 Hour Detox</button>
+  <p id="detoxMsg" style="margin-top:10px;"></p>
+</div>
+
+</section>
+
+<script>
+function saveApps() {
+  const insta = document.getElementById("insta").value || 0;
+  const yt = document.getElementById("yt").value || 0;
+  const data = { insta, yt };
+  localStorage.setItem("appsToday", JSON.stringify(data));
+  document.getElementById("appMsg").innerText = "✔ App usage saved";
+}
+
+function saveTime() {
+  const time = document.getElementById("screenTime").value;
+  if(time==="") { alert("Enter total time!"); return; }
+  const log = JSON.parse(localStorage.getItem("screenTrack")) || [];
+  log.push(Number(time));
+  localStorage.setItem("screenTrack", JSON.stringify(log));
+  alert("✔ Saved!");
+}
+
+function showTime() {
+  const listDiv = document.getElementById("logList");
+  const data = JSON.parse(localStorage.getItem("screenTrack")) || [];
+  if(data.length===0) { listDiv.innerHTML = "<p>No record yet</p>"; return; }
+
+  let total = data.reduce((a,b)=>a+b,0);
+  let html = "<ul style='list-style:none; padding-left:0;'>";
+  data.forEach((d,i)=> html += `<li>Day ${i+1}: ${d} mins</li>`);
+  html += `</ul><p><strong>Total:</strong> ${total} mins</p>`;
+  listDiv.innerHTML = html;
+}
+
+function startDetox() {
+  document.getElementById("detoxMsg").innerText =
+    "🧘 Detox started — Stay offline 1 hour.";
+}
+</script>
+<div class="back-container">
+  <a href="tips.html"><button class="back-btn">← Back to Tips</button></a>
+</div>
+
+</body>
+</html>

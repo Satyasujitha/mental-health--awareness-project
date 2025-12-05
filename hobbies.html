@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative Hobby Time</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <h1>Try Creative Hobbies 🎨</h1>
+  <p>Hobbies refresh your mind & recharge emotions</p>
+</header>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="tips.html">Mind Tips</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+
+  <!-- Why Hobbies Help -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>🎨 Why Hobbies are Important</h2>
+    <ul style="line-height:1.7; margin-top:10px;">
+      <li>Refreshes mind & removes stress</li>
+      <li>Boosts creativity & self-confidence</li>
+      <li>Gives emotional satisfaction</li>
+      <li>Improves patience, focus & memory</li>
+      <li>Makes life colorful and meaningful ✨</li>
+    </ul>
+  </div>
+
+  <!-- Add Hobby with Category & Time -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>⭐ Add Your Hobby</h2>
+
+    <input type="text" id="favHobby" placeholder="Hobby name (e.g., painting, music)"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+
+    <select id="hobbyCategory"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+      <option value="">Select Category</option>
+      <option>Art 🎨</option>
+      <option>Music 🎧</option>
+      <option>Reading 📚</option>
+      <option>Sports 🏃‍♂️</option>
+      <option>Craft ✂️</option>
+      <option>Cooking 🍳</option>
+      <option>Photography 📸</option>
+      <option>Gardening 🌱</option>
+    </select>
+
+    <select id="hobbyTime"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+      <option value="">Time Goal</option>
+      <option>10 minutes</option>
+      <option>20 minutes</option>
+      <option>30 minutes</option>
+      <option>1 hour</option>
+    </select>
+
+    <button onclick="saveHobby()">Save Hobby</button>
+    <p id="saveMsg" style="color:green; margin-top:10px;"></p>
+  </div>
+
+  <!-- Show All Hobbies with Delete -->
+  <div class="card" style="width:460px; text-align:left;">
+    <h2>💛 Your Saved Hobbies</h2>
+    <button onclick="showAllHobbies()">Show List</button>
+    <div id="hobbyList" style="margin-top:15px;"></div>
+  </div>
+
+  <!-- Activity Feedback -->
+  <div class="card" style="width:460px;">
+    <h2>😊 After Doing Hobby</h2>
+    <select id="moodSelect"
+      style="padding:8px; width:100%; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
+      <option value="">How do you feel?</option>
+      <option>Happy 😁</option>
+      <option>Relaxed 😌</option>
+      <option>Energetic ⚡</option>
+      <option>Peaceful 🌿</option>
+    </select>
+    <button onclick="saveMood()">Save Mood Response</button>
+    <p id="moodMsg" style="color:green; margin-top:10px;"></p>
+  </div>
+
+</section>
+
+<script>
+function saveHobby() {
+  const name = document.getElementById("favHobby").value;
+  const category = document.getElementById("hobbyCategory").value;
+  const time = document.getElementById("hobbyTime").value;
+
+  if (name === "" || category === "" || time === "") {
+    alert("⚠️ Please fill all fields.");
+    return;
+  }
+
+  const existing = JSON.parse(localStorage.getItem("hobbiesList")) || [];
+  existing.push({ name, category, time });
+  localStorage.setItem("hobbiesList", JSON.stringify(existing));
+
+  document.getElementById("saveMsg").innerText = "✔ Hobby Saved Successfully";
+  document.getElementById("favHobby").value = "";
+  document.getElementById("hobbyCategory").value = "";
+  document.getElementById("hobbyTime").value = "";
+}
+
+function showAllHobbies() {
+  const listDiv = document.getElementById("hobbyList");
+  const hobbies = JSON.parse(localStorage.getItem("hobbiesList")) || [];
+
+  if (hobbies.length === 0) {
+    listDiv.innerHTML = "<p>No hobbies saved yet 🌱</p>";
+    return;
+  }
+
+  let html = "<ul style='list-style:none; padding-left:0; line-height:1.7;'>";
+  hobbies.forEach((h, i) => {
+    html += `
+      <li>
+        <strong>${i+1}) ${h.name}</strong>
+        <br>Category: ${h.category}
+        <br>Time Goal: ${h.time}
+        <br><button onclick="deleteHobby(${i})" style="margin-top:5px;">Delete</button>
+      </li>
+      <hr>
+    `;
+  });
+  html += "</ul>";
+  listDiv.innerHTML = html;
+}
+
+function deleteHobby(index) {
+  const hobbies = JSON.parse(localStorage.getItem("hobbiesList"));
+  hobbies.splice(index, 1);
+  localStorage.setItem("hobbiesList", JSON.stringify(hobbies));
+  showAllHobbies();
+}
+
+function saveMood() {
+  const mood = document.getElementById("moodSelect").value;
+
+  if (mood === "") {
+    alert("⚠️ Select mood after hobby.");
+    return;
+  }
+
+  document.getElementById("moodMsg").innerText = "💛 Mood Recorded: " + mood;
+}
+</script>
+<div class="back-container">
+  <a href="tips.html"><button class="back-btn">← Back to Tips</button></a>
+</div>
+
+</body>
+</html>

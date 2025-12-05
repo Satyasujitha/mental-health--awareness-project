@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk to Someone</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <h1>Talk to Someone You Trust 💬</h1>
+  <p>Sharing your feelings lightens your emotional load</p>
+</header>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="tips.html">Mind Tips</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<section class="card-section">
+
+  <!-- Section 1: Why Talking Helps -->
+  <div class="card" style="width: 460px; text-align:left;">
+    <h2>1️⃣ Why Talking Helps</h2>
+    <ul style="line-height:1.7; margin-top:10px;">
+      <li>It reduces emotional stress and overthinking</li>
+      <li>Makes you feel heard, supported and understood</li>
+      <li>Improves clarity when confused or overwhelmed</li>
+      <li>Boosts emotional strength and mental peace</li>
+      <li>Helps you feel less alone</li>
+    </ul>
+  </div>
+
+  <!-- Section 2: Benefits -->
+  <div class="card" style="width: 460px; text-align:left;">
+    <h2>2️⃣ Benefits of Talking</h2>
+    <ul style="line-height:1.7; margin-top:10px;">
+      <li>Improves mood and reduces anxiety</li>
+      <li>Strengthens trust and relationships</li>
+      <li>Helps express emotions safely</li>
+      <li>Builds confidence and emotional maturity</li>
+      <li>Makes coping easier during tough times</li>
+    </ul>
+  </div>
+
+  <!-- Section 3: Add Trusted Contact -->
+  <div class="card" style="width: 460px;">
+    <h2>👤 Add Someone You Trust</h2>
+    <p style="font-size:0.9rem;">Add a person you feel safe and comfortable talking to.</p>
+
+    <input type="text" id="trustedName" placeholder="Enter name"
+      style="padding:8px; width:100%; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
+
+    <select id="trustedRelation"
+      style="padding:8px; width:100%; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
+      <option value="">Select Relationship</option>
+      <option>Father</option>
+      <option>Mother</option>
+      <option>Brother</option>
+      <option>Sister</option>
+      <option>Friend</option>
+      <option>Teacher</option>
+      <option>Cousin</option>
+      <option>Mentor</option>
+      <option>Relative</option>
+    </select>
+
+    <input type="text" id="trustedNum" placeholder="Enter phone number"
+      style="padding:8px; width:100%; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
+
+    <button onclick="saveContact()">Save Contact</button>
+    <p id="saveMsg" style="color:green; margin-top:8px;"></p>
+  </div>
+
+  <!-- Section 4: Show ALL Saved Contacts -->
+  <div class="card" style="width: 460px; text-align:left;">
+    <h2>💛 Your Support People</h2>
+    <p style="font-size:0.9rem;">All the people you saved will appear here.</p>
+    <button onclick="showAllContacts()">Show All Saved Contacts</button>
+
+    <div id="contactsList" style="margin-top:15px;"></div>
+  </div>
+
+  <!-- Section 5: Helpline -->
+  <div class="card" style="width: 460px;">
+    <h2>📞 If You Still Need Support</h2>
+    <p>National Mental Health Helpline (India):</p>
+    <h2 style="color:#007cff;">1800-599-0019</h2>
+    <p style="font-size:0.9rem;">Available 24×7 in multiple languages</p>
+    <button onclick="window.location.href='tel:18005990019'">Call Helpline</button>
+  </div>
+
+</section>
+
+<script>
+// Save one contact (append to list)
+function saveContact() {
+  const name = document.getElementById("trustedName").value;
+  const relation = document.getElementById("trustedRelation").value;
+  const num = document.getElementById("trustedNum").value;
+
+  if (name.trim() === "" || relation.trim() === "" || num.trim() === "") {
+    alert("⚠️ Please fill all fields before saving.");
+    return;
+  }
+
+  // get existing array or empty
+  const existing = JSON.parse(localStorage.getItem("trustedContacts")) || [];
+
+  // new contact object
+  const contact = { name, relation, num };
+
+  // add to array
+  existing.push(contact);
+
+  // save back
+  localStorage.setItem("trustedContacts", JSON.stringify(existing));
+
+  document.getElementById("saveMsg").innerText = "✔ Contact Saved Successfully";
+
+  // clear inputs
+  document.getElementById("trustedName").value = "";
+  document.getElementById("trustedRelation").value = "";
+  document.getElementById("trustedNum").value = "";
+}
+
+// Show ALL saved contacts
+function showAllContacts() {
+  const listDiv = document.getElementById("contactsList");
+  const contacts = JSON.parse(localStorage.getItem("trustedContacts")) || [];
+
+  if (contacts.length === 0) {
+    listDiv.innerHTML = "<p>No contacts saved yet. Please add at least one.</p>";
+    return;
+  }
+
+  // build HTML list
+  let html = "<ul style='list-style-type:none; padding-left:0; line-height:1.7;'>";
+
+  contacts.forEach((c, index) => {
+    html += `
+      <li style="margin-bottom:8px;">
+        <strong>${index + 1}) ${c.name}</strong><br>
+        Relation: ${c.relation}<br>
+        Phone: ${c.num}
+      </li>
+    `;
+  });
+
+  html += "</ul>";
+  html += "<p style='margin-top:10px;'>Whenever you feel low, choose any one of them and talk 💛</p>";
+
+  listDiv.innerHTML = html;
+}
+</script>
+<div class="back-container">
+  <a href="tips.html"><button class="back-btn">← Back to tips</button></a>
+</div>
+
+</body>
+</html>

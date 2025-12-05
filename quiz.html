@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Health Quiz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-header">
+  <h1>Mental Health Quiz</h1>
+  <p>Check your emotional wellness score</p>
+</header>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="mood.html">Start Journey</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="quiz.html">Quiz</a>
+  <a href="safetalk.html">SafeTalk</a>
+</nav>
+
+<section class="card-section">
+  <div class="card" style="width: 380px;">
+
+    <form id="quizForm">
+      <label>How often do you feel stressed?</label>
+      <select name="q1" required>
+        <option value="80">Rarely</option>
+        <option value="60">Sometimes</option>
+        <option value="30">Often</option>
+        <option value="10">Always</option>
+      </select>
+
+      <label>How well do you sleep?</label>
+      <select name="q2" required>
+        <option value="80">Very well</option>
+        <option value="60">Okay</option>
+        <option value="30">Not great</option>
+        <option value="10">Very poor</option>
+      </select>
+
+      <label>Do you share your feelings?</label>
+      <select name="q3" required>
+        <option value="80">Yes</option>
+        <option value="60">Sometimes</option>
+        <option value="30">Rarely</option>
+        <option value="10">Never</option>
+      </select>
+
+      <label>How active are you physically?</label>
+      <select name="q4" required>
+        <option value="80">Very active</option>
+        <option value="60">Moderate</option>
+        <option value="30">Less</option>
+        <option value="10">Not active</option>
+      </select>
+
+      <button type="submit">Get Result</button>
+    </form>
+
+    <div id="result" style="margin-top:20px;"></div>
+
+  </div>
+</section>
+
+<script>
+const form = document.getElementById("quizForm");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const data = new FormData(form);
+  let total = 0;
+
+  for (const v of data.values()) total += Number(v);
+
+  const percent = Math.round(total / 4);
+
+  let message = "";
+  if (percent >= 70) {
+    message = "You are mentally doing great! 🌈";
+  } else if (percent >= 40) {
+    message = "You are okay, but take breaks & talk to someone 💛";
+  } else {
+    message = "It's okay to ask for help. Reach out. You matter 💙";
+  }
+
+  document.getElementById("result").innerHTML =
+    `<h2>Your Score: ${percent}%</h2><p>${message}</p>`;
+});
+</script>
+<div class="back-container">
+  <a href="index.html"><button class="back-btn">← Back to Home</button></a>
+</div>
+
+</body>
+</html>
