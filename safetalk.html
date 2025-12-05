@@ -155,22 +155,57 @@ function sendMessage() {
   let msg = input.value.toLowerCase();
   input.value = "";
 
+  // REPLY LISTS FOR VARIATION
+  const sadReplies = [
+    "I’m sorry you're feeling like this 💛 You can talk to me, I’m listening.",
+    "It must be heavy to feel this way. Want to share more?",
+    "You don’t have to handle it alone. I’m here with you.",
+    "Your feelings are valid. I’m here if you want to express more."
+  ];
+
+  const angryReplies = [
+    "It’s okay to feel angry sometimes. What caused it?",
+    "You deserve space to express this feeling safely.",
+    "Anger often hides hurt. What do you think triggered it?",
+    "I hear you. When did you start feeling like this?"
+  ];
+
+  const anxiousReplies = [
+    "Anxiety can feel overwhelming. You are safe here 💛",
+    "You’re doing your best. Breathing helps—would you like guidance?",
+    "It’s okay to talk slowly. I’m here with you.",
+    "You’re not alone in this feeling. Want to share what caused it?"
+  ];
+
+  const defaultReplies = [
+    "I’m listening 👂 You can share more if you want.",
+    "You don’t have to rush, take your time.",
+    "Feel free to express what’s in your mind.",
+    "It’s okay, I’m here for you 💛"
+  ];
+
   setTimeout(() => {
+    let reply = "";
+
     if (msg.includes("sad") || msg.includes("low") || msg.includes("upset")) {
-      botReply("I’m sorry you’re feeling this way 💛 I’m here to listen if you want to share more.");
+      reply = sadReplies[Math.floor(Math.random() * sadReplies.length)];
     } 
     else if (msg.includes("angry") || msg.includes("frustrated")) {
-      botReply("That sounds tough. What made you feel this way?");
-    }
+      reply = angryReplies[Math.floor(Math.random() * angryReplies.length)];
+    } 
     else if (msg.includes("scared") || msg.includes("anxious")) {
-      botReply("Anxiety can feel heavy. You’re safe here. Want to talk more?");
-    }
+      reply = anxiousReplies[Math.floor(Math.random() * anxiousReplies.length)];
+    } 
     else {
-      botReply("I’m listening 👂 You can tell me more if you'd like.");
+      reply = defaultReplies[Math.floor(Math.random() * defaultReplies.length)];
     }
-  }, 700);
+
+    botReply(reply);
+  }, 800);
 }
+
 </script>
 
 </body>
 </html>
+
