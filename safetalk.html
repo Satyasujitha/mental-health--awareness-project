@@ -3,64 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafeTalk 💬</title>
+<title>SafeTalk Support</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top-header">
-  <h1>SafeTalk</h1>
-  <p>Share your feelings safely 💛</p>
+  <h1>SafeTalk 🗣️</h1>
+  <p>You are not alone. Talking helps you feel lighter.</p>
 </header>
 
 <nav class="navbar">
   <a href="index.html">Home</a>
-  <a href="mood.html">Start Journey</a>
+  <a href="tips.html">Tips</a>
   <a href="dashboard.html">Dashboard</a>
   <a href="quiz.html">Quiz</a>
-  <a href="safetalk.html">SafeTalk</a>
 </nav>
 
 <section class="card-section">
-  <div class="card" style="width: 350px;">
-    <textarea id="msg" placeholder="Write your feelings..."></textarea>
-    <button onclick="postMsg()">Post</button>
+
+  <!-- WHY TALKING HELPS -->
+  <div class="card" style="text-align:left;">
+    <h2>💛 Why talking helps</h2>
+    <ul style="line-height:1.6;">
+      <li>Releases stress & bottled emotions</li>
+      <li>Makes you feel supported & safe</li>
+      <li>Gives clarity when confused</li>
+      <li>Reduces loneliness</li>
+      <li>You understand yourself better</li>
+    </ul>
   </div>
 
-  <div class="card" style="width: 450px;">
-    <h3>Messages</h3>
-    <div id="wall"></div>
+  <!-- WHEN TO TALK -->
+  <div class="card" style="text-align:left;">
+    <h2>🕒 When should you talk?</h2>
+    <ul style="line-height:1.6;">
+      <li>When feelings get too heavy</li>
+      <li>When overthinking doesn’t stop</li>
+      <li>When you feel ignored or anxious</li>
+      <li>When mood stays low for days</li>
+      <li>When sleep/eating pattern changes</li>
+    </ul>
   </div>
+
+  <!-- ADD A TRUSTED PERSON -->
+  <div class="card">
+    <h2>📞 Add Someone You Trust</h2>
+    <input type="text" id="name" placeholder="Name" class="input-box">
+    <input type="text" id="relation" placeholder="Relation (e.g., cousin, teacher)" class="input-box">
+    <input type="number" id="phone" placeholder="Phone Number" class="input-box">
+    <button onclick="savePerson()">Save Contact</button>
+    <p id="saveMsg"></p>
+  </div>
+
+  <!-- SHOW SAVED CONTACTS -->
+  <div class="card" style="text-align:left;">
+    <h2>📋 Saved Trusted Contacts</h2>
+    <div id="contactList"></div>
+  </div>
+
+  <!-- HOW TO START TALKING -->
+  <div class="card" style="text-align:left;">
+    <h2>🗣️ How to start a conversation</h2>
+    <ul style="line-height:1.6;">
+      <li>“I’ve been feeling low lately, can I talk to you?”</li>
+      <li>“I need someone to listen, are you free?”</li>
+      <li>“I don’t know what’s happening, but I need support.”</li>
+      <li>“Can I share what’s going on in my head?”</li>
+    </ul>
+  </div>
+
+  <!-- HELPLINE -->
+  <div class="card" style="text-align:left;">
+    <h2>🚨 Emergency Helpline</h2>
+    <p><strong>1098</strong> - Child Helpline</p>
+    <p><strong>112</strong> - National Emergency Number</p>
+    <p style="font-size:0.9rem;">Use only if necessary or in unsafe situations.</p>
+  </div>
+
 </section>
 
+<!-- BACK -->
+<div class="back-container">
+  <a href="tips.html"><button class="back-btn">← Back to Tips</button></a>
+</div>
 
 <script>
-const form = document.getElementById("msgForm");
-const wall = document.getElementById("wall");
+function savePerson() {
+  const name = document.getElementById("name").value;
+  const relation = document.getElementById("relation").value;
+  const phone = document.getElementById("phone").value;
 
-function loadMessages() {
-  const msgs = JSON.parse(localStorage.getItem("safeTalk")) || [];
-  wall.innerHTML = msgs.map(m => `<div class="neon-box" style="margin:10px 0;padding:15px;">${m}</div>`).join("");
+  if(!name || !relation || !phone) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const data = JSON.parse(localStorage.getItem("trustedPersons")) || [];
+  data.push({ name, relation, phone });
+  localStorage.setItem("trustedPersons", JSON.stringify(data));
+
+  document.getElementById("saveMsg").innerText = "✔ Contact saved!";
+  document.getElementById("name").value = "";
+  document.getElementById("relation").value = "";
+  document.getElementById("phone").value = "";
+
+  showContacts();
 }
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
-  const msg = document.getElementById("message").value;
+function showContacts() {
+  const listDiv = document.getElementById("contactList");
+  const data = JSON.parse(localStorage.getItem("trustedPersons")) || [];
 
-  const existing = JSON.parse(localStorage.getItem("safeTalk")) || [];
-  existing.push(msg);
+  if(data.length === 0) {
+    listDiv.innerHTML = "<p>No contacts saved yet.</p>";
+    return;
+  }
 
-  localStorage.setItem("safeTalk", JSON.stringify(existing));
-  document.getElementById("message").value = "";
+  let html = "<ul style='padding-left:15px;'>";
+  data.forEach((person, index) => {
+    html += `<li>${person.name} (${person.relation}) - ${person.phone}
+      <button onclick="deletePerson(${index})" style="margin-left:10px; font-size:0.8rem;">Delete</button>
+    </li>`;
+  });
+  html += "</ul>";
+  listDiv.innerHTML = html;
+}
 
-  loadMessages();
-});
+function deletePerson(index) {
+  const data = JSON.parse(localStorage.getItem("trustedPersons")) || [];
+  data.splice(index, 1);
+  localStorage.setItem("trustedPersons", JSON.stringify(data));
+  showContacts();
+}
 
-loadMessages();
+showContacts();
 </script>
-<div class="back-container">
-  <a href="index.html"><button class="back-btn">← Back to Home</button></a>
-</div>
 
 </body>
 </html>
